@@ -24,10 +24,16 @@ class MailboxTextFormatter
       @mailbox=mailbox 
     end
     def format
-      printf "Date\t\tFrom\t\tSubject\n" 
+      
+      puts "+--------------+----------------+-----------------------+\n"
+      puts "|Date\t       |From\t\t|Subject\t\t|\n" 
+      puts "+--------------+----------------+-----------------------+\n"
+     
       @mailbox.emails.each do |email|
-        printf "#{email.date}\t#{email.from}\t\t#{email.subject}\n"
-      end      
+        puts "|#{email.date}    |#{email.from}\t\t|#{email.subject}\t|\n"
+      end 
+      return "+--------------+----------------+-----------------------+\n"
+        
     end
 end
 
