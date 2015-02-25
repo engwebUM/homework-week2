@@ -1,3 +1,5 @@
+require 'terminal-table'
+#run on the console: 'gem install terminal-table' to get terminal-table 
 class Email
   attr_reader :subject,:date,:from
   def initialize(sub,header={})
@@ -23,17 +25,14 @@ class MailboxTextFormatter
     def initialize(mailbox)
       @mailbox=mailbox 
     end
+    
     def format
-      
-      puts "+--------------+----------------+-----------------------+\n"
-      puts "|Date\t       |From\t\t|Subject\t\t|\n" 
-      puts "+--------------+----------------+-----------------------+\n"
-     
+      rows1 = []
       @mailbox.emails.each do |email|
-        puts "|#{email.date}    |#{email.from}\t\t|#{email.subject}\t|\n"
-      end 
-      return "+--------------+----------------+-----------------------+\n"
-        
+      rows1 << [email.date, email.from, email.subject]
+      end
+      table = Terminal::Table.new :headings => ['Date', 'From', 'Subject'], :rows => rows1
+      puts table
     end
 end
 
