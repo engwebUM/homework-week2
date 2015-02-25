@@ -1,5 +1,3 @@
-require 'terminal-table'
-#run on the console: 'gem install terminal-table' to get terminal-table 
 class Email
   attr_reader :subject,:date,:from
   def initialize(sub,header={})
