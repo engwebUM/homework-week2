@@ -5,10 +5,10 @@ class Email
   attr_reader :from
 
   def initialize(subject, headers)
-   @subject = subject
-   @date = headers[:date]
-   @from = headers[:from]
- end
+    @subject = subject
+    @date = headers[:date]
+    @from = headers[:from]
+  end
 
 end
 
@@ -17,9 +17,9 @@ class Mailbox
   attr_reader :emails
 
   def initialize(name, emails)
-   @name = name
-   @emails = emails
- end
+    @name = name
+    @emails = emails
+  end
 
 end
 
