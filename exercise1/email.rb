@@ -1,3 +1,4 @@
+# Classe Email
 class Email
 	def initialize(subject,date,from)
 		@subject = subject
