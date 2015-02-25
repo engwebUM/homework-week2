@@ -2,9 +2,7 @@ class Email
   attr_reader :date, :from, :subject
 
   def initialize(subject, headers)
-    @subject = subject
-    @date = headers[:date]
-    @from = headers[:from]
+    @subject, @date, @from = subject, headers[:date], headers[:from]
   end
 end
 
