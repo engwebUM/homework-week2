@@ -1,5 +1,5 @@
 class Email
-	
+
 	attr_reader :subject
 	attr_reader :date
 	attr_reader :from
@@ -13,7 +13,7 @@ class Email
 end
 
 class Mailbox
-	
+
 	attr_reader :emails
 
 	def initialize(name, emails)
