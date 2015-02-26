@@ -12,8 +12,6 @@ class Mailbox
   def initialize(name, emails)
     @name, @emails = name, emails
   end
-
-
 end
 
 emails = [
