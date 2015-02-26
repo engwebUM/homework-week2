@@ -1,3 +1,4 @@
+# Email class
 class Email
 	attr_reader :subject
 	attr_reader :date
