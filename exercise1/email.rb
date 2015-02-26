@@ -10,7 +10,6 @@ class Email
   end
 end
 
-
 email = Email.new("Keep on coding! :)", { :date => "2014-12-01", :from => "Ferdous" })
 
 puts "Date:    #{email.date}"
