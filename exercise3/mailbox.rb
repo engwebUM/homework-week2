@@ -21,39 +21,47 @@ class Mailbox
 end
 
 class MailboxTextFormatter
+  # How to add more columns:
+  #   -in the initialize method, update @column_lengths
+  #   -in the format method, add the new email field
   def initialize(mailbox)
     @mailbox = mailbox
+    @column_lengths = {
+      "Date" => ["Date".length, max_column_length(@mailbox.emails.map { |e| e.date })].max,
+      "From" => ["From".length, max_column_length(@mailbox.emails.map { |e| e.from })].max,
+      "Subject" => ["Subject".length, max_column_length(@mailbox.emails.map { |e| e.subject })].max
+    }
+    @column_lengths.values.map! { |cl| cl + 2 } # adds room for surrounding white spaces
   end
 
   def format
     puts "Mailbox: #{@mailbox.name}"
     puts
-    max_widths = [
-      [((@mailbox.emails.map { |e| e.date}).max_by { |d| d.length}).length, "Date".length].max,
-      [((@mailbox.emails.map { |e| e.from}).max_by { |d| d.length}).length, "From".length].max,
-      [((@mailbox.emails.map { |e| e.subject}).max_by { |d| d.length}).length, "Subject".length].max
-    ]
-    #prints the header
-    print_row_separator(max_widths)
-    print_row(["Date", "From", "Subject"], max_widths)
-    print_row_separator(max_widths)
-    #prints the rows
-    @mailbox.emails.each { |email| print_row([email.date, email.from, email.subject], max_widths)}
-    #prints bottom
-    print_row_separator(max_widths)
+
+    print_line
+    print_row(@column_lengths.keys, "|")
+    print_line
+
+    @mailbox.emails.each { |e| print_row([e.date, e.from, e.subject], "|") }
+
+    print_line
   end
 
   private
 
-  def print_row(row, columns_width)
-    output = "|" 
-    row.each_index { |i| output += " " + row[i] + " "*(columns_width[i] - row[i].length) + " |"}
-    puts output
+  def max_column_length(column)
+    (column.max_by { |w| w.length }).length
   end
 
-  def print_row_separator(columns_width)
-    output = "+"
-    columns_width.each { |column| output += "-"*(column+2) + "+" }
+  def print_line
+    row = []
+    @column_lengths.values.each { |cl| row.push("-" * cl)}
+    print_row(row, "+")
+  end
+
+  def print_row(row, separator)
+    output = separator
+    row.each_index { |i| output += " " + row[i] + " "*(@column_lengths.values[i] - row[i].length + 1) + separator }
     puts output
   end
 end
