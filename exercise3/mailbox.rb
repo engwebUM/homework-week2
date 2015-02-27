@@ -24,6 +24,11 @@ class MailboxTextFormatter
 	end
 
 	def format
+		formatCells = '%-15s %-15s %-20s'
+		puts formatCells % ['Date', 'From', 'Subject']
+		@mailbox.emails.map do |email| 
+			formatCells % [email.date, email.from, email.subject]
+		end
 
 	end
 end
