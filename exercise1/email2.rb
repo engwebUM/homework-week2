@@ -4,18 +4,7 @@ class Email2
 	def initialize(subject, options={})
    	@subject, @date, @from  = subject, options[:date], options[:from]
 	end
-
-	def subject
-	  	@subject
-	end
-
-	def date
-	  	@date
-	end
-
-	def from
-	  	@from
-	end
+	
 end
 
 email = Email2.new("of your interest", { :date => "2015-02-27", :from => "A guy" })
