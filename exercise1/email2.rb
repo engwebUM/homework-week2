@@ -1,14 +1,26 @@
 class Email
 	 attr_reader :subject  
-	 attr_reader :date
-	 attr_reader :from   
+	 attr_reader :headers
 
-	def initialize (s="subject" , d="date" , f="from")
+	def initialize (s= subject,h = {date => "date", from => "from"})
 		@subject = s
-		@date = d
-		@from = f
+		@headers = h
+	end
+
+	def date
+		headers[:date]
+	end
+
+	def from
+		headers[:from]
 	end
 
 end
 
+
+	email = Email.new("Keep on coding! :)", { :date => "2014-12-01", :from => "Ferdous" })
+
+	puts "Date:    #{email.date}"
+	puts "From:    #{email.from}"
+	puts "Subject: #{email.subject}"
 

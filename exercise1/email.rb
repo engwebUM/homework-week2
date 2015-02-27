@@ -1,3 +1,5 @@
+puts "Exercicio 1.1"
+
 class Email
 	 attr_reader :subject  
 	 attr_reader :date
