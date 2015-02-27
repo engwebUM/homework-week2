@@ -19,18 +19,32 @@ class MailboxTextFormatter
 
   def initialize(mailbox)
     @mailbox = mailbox
-    @columns = ["Date", "From", "Subject"]
-    @columns_width = [10, 7, 22]
+    @columns = [:date, :from, :subject] # change this line to add, delete or reorder columns
+    @columns_width = set_columns_width
   end
 
   def format
     s_name << s_separator << s_header << s_separator << s_emails << s_separator
   end
 
+  def set_columns_width
+    arr = columns.map{|item| item.length} # in case columns' titles are bigger or there are no emails
+    mailbox.emails.each do |email|
+      columns.each_with_index do |column, index|
+        arr[index] = [arr[index], email.instance_variable_get("@#{column}").to_s.length].max
+      end
+    end
+    arr
+  end
+
   def s_emails
     str = ""
     mailbox.emails.each do |email|
-      str << "| %s | %s | %s |" % [email.date, email.from.ljust(7), email.subject.ljust(22)] << "\n"
+      str << "|"
+      columns.each_with_index do |column, index|
+        str << " %s |" % [email.instance_variable_get("@#{column}").to_s.ljust(columns_width[index])]
+      end
+      str << "\n"
     end
     str
   end
@@ -38,7 +52,7 @@ class MailboxTextFormatter
   def s_header
     str = "|"
     columns.each_with_index do |column, index|
-      str << " %s |" % [column.to_s.ljust(columns_width[index])]
+      str << " %s |" % [column.to_s.capitalize.ljust(columns_width[index])]
     end
     str << "\n"
   end
