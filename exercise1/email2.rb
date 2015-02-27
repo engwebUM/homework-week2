@@ -1,10 +1,9 @@
 class Email2
-   attr_reader :date, :from
+    attr_reader :subject, :date, :from
 
-	def initialize(subject, options={})
-   	@subject, @date, @from  = subject, options[:date], options[:from]
-	end
-	
+   def initialize(subject, options={})
+         @subject, @date, @from  = subject, options[:date], options[:from]
+   end
 end
 
 email = Email2.new("of your interest", { :date => "2015-02-27", :from => "A guy" })
