@@ -1,8 +1,6 @@
 class Email
 	def initialize(subject, date, from)
-      	@subject = subject
-      	@date = date
-      	@from = from
+      	@subject, @date, @from = subject, date, from
    	end
 
    	def subject
