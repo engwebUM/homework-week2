@@ -1,3 +1,5 @@
+puts "Exercicio 1.2"
+
 class Email
 	 attr_reader :subject  
 	 attr_reader :headers
@@ -14,6 +16,7 @@ class Email
 	def from
 		headers[:from]
 	end
+
 
 end
 
