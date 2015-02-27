@@ -28,15 +28,9 @@ class MailboxTextFormatter
   end
 
   def set_columns_width
-    arr = columns
-    hash = {}
-    arr.each do |val|
-      hash[val] = val.length # in case columns' titles are bigger or there are no emails
-    end
+    hash = columns.map{|val| [val.to_s.downcase, val.length]}.to_h  # in case columns' titles are bigger or there are no emails
     mailbox.emails.each do |email|
-      hash.keys.each do |key|
-        hash[key] = [hash[key], email.instance_variable_get("@#{key}").to_s.length].max
-      end
+      hash.update(hash){|key, value| [hash[key], email.instance_variable_get("@#{key}").to_s.length].max}
     end
     hash
   end
