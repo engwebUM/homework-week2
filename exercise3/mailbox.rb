@@ -54,30 +54,35 @@ class MailboxTextFormatter
 
   def printEdge(hash)
     hash.each do |key, value|
-      print '+'
-      repeat('-', (value + 2)) # Because 2 extra spaces in the table
+      printEdgeColumn(value)
     end
     print '+' #finish line
   end
 
   def printHeader(hash)
     hash.each do |key, value|
-      printData(key, value)
+      printDataColumn(key, value)
     end
     print '|' #finish line
   end
 
   def printEmails(hash)
     mailbox.emails.each do |email|
-      printData(email.date,hash["Date"])
-      printData(email.from,hash["From"])
-      printData(email.subject,hash["Subject"])
+      printDataColumn(email.date, hash["Date"])
+      printDataColumn(email.from, hash["From"])
+      printDataColumn(email.subject, hash["Subject"])
       print '|' #finish line
       puts
     end
   end
 
-  def printData(key, value)
+  def printEdgeColumn(value)
+    print "+-"
+    repeat('-', value)
+    print '-'
+  end
+
+  def printDataColumn(key, value)
     print "| #{key}"
     repeat(' ', (value - key.length))
     print ' '
