@@ -6,7 +6,6 @@ class Email
       @from=headers[:from]
    end
 end
-
 class Mailbox
   attr_reader :name, :emails
   def initialize(subject, emails)
