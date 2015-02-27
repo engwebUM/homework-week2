@@ -6,27 +6,33 @@ class Email
   end
 
   def print_email
-    "| %s | %s | %s |\n" % [date, from.ljust(7), subject.ljust(22)]
+    "| %s | %s | %s |" % [date, from.ljust(7), subject.ljust(22)]
   end
 end
 
 class Mailbox
-  attr_reader :name, :emails
+  attr_reader :name, :emails, :columns, :columns_width
 
   def initialize(name, emails)
     @name, @emails = name, emails
+    @columns = ["Date", "From", "Subject"]
+    @columns_width = [10, 7, 22]
   end
 
   def print_emails
     str = ""
     emails.each do |email|
-      str << email.print_email
+      str << email.print_email << "\n"
     end
     str
   end
 
   def print_header
-    "| %s | %s | %s |\n" % ["Date".ljust(10), "From".ljust(7), "Subject".ljust(22)]
+    str = "|"
+    columns.each_with_index do |column, index|
+      str << " %s |" % [column.to_s.ljust(columns_width[index])]
+    end
+    str << "\n"
   end
 
   def print_name
@@ -34,7 +40,11 @@ class Mailbox
   end
 
   def print_sep
-    "+%s+%s+%s+\n" % ["".ljust(10+2,'-'), "".ljust(7+2,'-'), "".ljust(22+2,'-')]
+    str = "+"
+    for index in 0 ... columns.size
+      str << "%s+" % ["".ljust(columns_width[index]+2, '-')] # +2 to cover initial and final spaces
+    end
+    str << "\n"
   end
 end
 
