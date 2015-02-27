@@ -7,7 +7,6 @@ class Email
     @date = date
     @from = from
   end
-
 end
 
 email = Email.new("Homework this week", "2014-12-01", "Ferdous")

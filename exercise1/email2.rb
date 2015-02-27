@@ -1,5 +1,5 @@
 class Email
-
+  
   attr_reader :subject, :date, :from
 
   def initialize (subject, headers)
@@ -7,7 +7,6 @@ class Email
     @date    = headers[:date].to_s
     @from    = headers[:from].to_s
   end
-
 end
 
 email = Email.new("Keep on coding! :)", { :date => "2014-12-01", :from => "Ferdous" })
