@@ -4,30 +4,38 @@ class Email
   def initialize(subject, headers)
     @subject, @date, @from = subject, headers[:date], headers[:from]
   end
-
-  def print_email
-    "| %s | %s | %s |" % [date, from.ljust(7), subject.ljust(22)]
-  end
 end
 
 class Mailbox
-  attr_reader :name, :emails, :columns, :columns_width
+  attr_reader :name, :emails
 
   def initialize(name, emails)
     @name, @emails = name, emails
+  end
+end
+
+class MailboxTextFormatter
+  attr_reader :mailbox, :columns, :columns_width
+
+  def initialize(mailbox)
+    @mailbox = mailbox
     @columns = ["Date", "From", "Subject"]
     @columns_width = [10, 7, 22]
   end
 
-  def print_emails
+  def format
+    s_name << s_separator << s_header << s_separator << s_emails << s_separator
+  end
+
+  def s_emails
     str = ""
-    emails.each do |email|
-      str << email.print_email << "\n"
+    mailbox.emails.each do |email|
+      str << "| %s | %s | %s |" % [email.date, email.from.ljust(7), email.subject.ljust(22)] << "\n"
     end
     str
   end
 
-  def print_header
+  def s_header
     str = "|"
     columns.each_with_index do |column, index|
       str << " %s |" % [column.to_s.ljust(columns_width[index])]
@@ -35,28 +43,16 @@ class Mailbox
     str << "\n"
   end
 
-  def print_name
-    "Mailbox: #{name}\n\n"
+  def s_name
+    "Mailbox: #{mailbox.name}\n\n"
   end
 
-  def print_sep
+  def s_separator
     str = "+"
     for index in 0 ... columns.size
       str << "%s+" % ["".ljust(columns_width[index]+2, '-')] # +2 to cover initial and final spaces
     end
     str << "\n"
-  end
-end
-
-class MailboxTextFormatter
-  attr_reader :mailbox
-
-  def initialize(mailbox)
-    @mailbox = mailbox
-  end
-
-  def format
-    "#{mailbox.print_name}#{mailbox.print_sep}#{mailbox.print_header}#{mailbox.print_sep}#{mailbox.print_emails}#{mailbox.print_sep}"
   end
 end
 
