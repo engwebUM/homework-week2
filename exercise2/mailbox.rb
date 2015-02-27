@@ -8,7 +8,7 @@ class Email
 end
 class Mailbox
   attr_reader :name, :emails
-  def initialize(subject, emails)
+  def initialize(name, emails)
       @name=name
       @emails=emails
    end
