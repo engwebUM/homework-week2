@@ -20,15 +20,17 @@ class MailboxTextFormatter
   def initialize(mailbox)
     @mailbox = mailbox
     @columns = [:date, :from, :subject] # change this line to add, delete or reorder columns (use strings or symbols)
-    @columns = set_columns_width # NOTE: from this point on, @columns becomes an hash with columns' names and widths like {col1: 10, colN: 21}
+    # NOTE: from this point on, @columns becomes an hash with columns' names and widths like {col1: 10, colN: 21}
+    @columns = columns.map{|val| [val.to_s.downcase, val.length]}.to_h  # populate hash with length from columns' titles
   end
 
   def format
+    @columns = set_columns_width # setting widths before formatting, in case something has changed since initialization
     s_name << s_separator << s_header << s_separator << s_emails << s_separator
   end
 
   def set_columns_width
-    hash = columns.map{|val| [val.to_s.downcase, val.length]}.to_h  # in case columns' titles are bigger or there are no emails
+    hash = columns
     mailbox.emails.each do |email|
       hash.update(hash){|key, value| [hash[key], email.instance_variable_get("@#{key}").to_s.length].max}
     end
