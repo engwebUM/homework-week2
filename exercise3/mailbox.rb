@@ -38,23 +38,17 @@ class MailboxTextFormatter
   end
 
   def s_emails
-    str = ""
-    mailbox.emails.each do |email|
-      str << "|"
-      columns.keys.each do |key|
-        str << " %s |" % [email.instance_variable_get("@#{key}").to_s.ljust(columns[key])]
-      end
-      str << "\n"
+    mailbox.emails.reduce("") do |memo, email|
+      memo << columns.keys.reduce("|") do |other_memo, key|
+        other_memo << " #{email.instance_variable_get("@#{key}").to_s.ljust(columns[key])} |"
+      end << "\n"
     end
-    str
   end
 
   def s_header
-    str = "|"
-    columns.keys.each do |key|
-      str << " %s |" % [key.to_s.capitalize.ljust(columns[key])]
-    end
-    str << "\n"
+    columns.keys.reduce("|") do |memo, key|
+      memo << " #{key.to_s.capitalize.ljust(columns[key])} |"
+    end << "\n"
   end
 
   def s_name
@@ -62,11 +56,9 @@ class MailboxTextFormatter
   end
 
   def s_separator
-    str = "+"
-    columns.keys.each do |key|
-      str << "%s+" % ["".ljust(columns[key]+2, '-')] # +2 to cover initial and final spaces
-    end
-    str << "\n"
+    columns.keys.reduce("+") do |memo, key|
+      memo << "#{"".ljust(columns[key]+2, '-')}+"
+    end << "\n"
   end
 end
 
