@@ -21,16 +21,15 @@ class Mailbox
 end
 
 class MailboxTextFormatter
-  # How to add more columns:
-  #   -in the initialize method, update @column_lengths
-  #   -in the format method, add the new email field
+  # To add more columns:
+  #   -in the initialize method, add the proper call to add_column
+  #   -in the format method, pass the new email field to print_row
   def initialize(mailbox)
     @mailbox = mailbox
-    @column_lengths = {
-      "Date" => max_column_length((@mailbox.emails.map { |e| e.date }).push("Date")),
-      "From" => max_column_length((@mailbox.emails.map { |e| e.from }).push("From")),
-      "Subject" => max_column_length((@mailbox.emails.map { |e| e.subject }).push("Subject"))
-    }
+    @column_lengths = { }
+    add_column("Date") { |e| e.date }
+    add_column("From") { |e| e.from }
+    add_column("Subject") { |e| e.subject }
   end
 
   def format
@@ -48,8 +47,9 @@ class MailboxTextFormatter
 
   private
 
-  def max_column_length(column)
-    (column.max_by { |w| w.length }).length
+  def add_column(column_name)
+    column = @mailbox.emails.map { |e| yield e }
+    @column_lengths[column_name] = [column.max_by(&:length).length, column_name.length].max
   end
 
   def print_row(row)
