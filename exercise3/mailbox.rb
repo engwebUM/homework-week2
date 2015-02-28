@@ -21,15 +21,18 @@ class Mailbox
 end
 
 class MailboxTextFormatter
-  # To add more columns:
-  #   -in the initialize method, add the proper call to add_column
-  #   -in the format method, pass the new email field to print_row
+  # To add more columns, just modify the initialize method:
+  #   -add the proper call to add_column
+  #   -add the new email field to @email_to_row
   def initialize(mailbox)
     @mailbox = mailbox
+
     @column_lengths = { }
     add_column("Date") { |e| e.date }
     add_column("From") { |e| e.from }
     add_column("Subject") { |e| e.subject }
+
+    @email_to_row = lambda { |e| [e.date, e.from, e.subject] }
   end
 
   def format
@@ -40,7 +43,7 @@ class MailboxTextFormatter
     print_row(@column_lengths.keys)
     print_row_separator
 
-    @mailbox.emails.each { |e| print_row([e.date, e.from, e.subject]) }
+    @mailbox.emails.each { |e| print_row(@email_to_row.call(e)) }
 
     print_row_separator
   end
