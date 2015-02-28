@@ -21,13 +21,14 @@ end
 
 class MailboxTextFormatter
 
-  LENGTH_DATE = 10 # date have always the same length
+  LENGTH_DATE        = 10 # date have always the same length
 
   def initialize(mailbox)
     @mailbox = mailbox
   end
 
   def format
+
     maxlength_from    = 0
     maxlength_subject = 0
 
@@ -42,27 +43,38 @@ class MailboxTextFormatter
       end
     end
 
-    # print table
-    puts "Mailbox:   #{@mailbox.name}"
-    puts
-    puts "+" + "-"*(LENGTH_DATE+2)  + "+" + "-"*(maxlength_from+2) + "+" + "-"*(maxlength_subject+2) + "+"
-    puts "| " + ProcessSpaces("Date", LENGTH_DATE)+"| " + ProcessSpaces("From", maxlength_from) +"| " + ProcessSpaces("Subject", maxlength_subject) + "|"
-    puts "+" + "-"*(LENGTH_DATE+2)  + "+" + "-"*(maxlength_from+2) + "+" + "-"*(maxlength_subject+2) + "+"
+    # Print table
+    puts "Mailbox:   #{@mailbox.name}\n\n"
+    printSeparatorLine(maxlength_from, maxlength_subject)
 
-    # print all emails in Mailbox
+    # Title Header
+    print "| " + processSpaces("Date", LENGTH_DATE)
+    print "| " + processSpaces("From", maxlength_from)
+    print "| " + processSpaces("Subject", maxlength_subject) + "|\n"
+    printSeparatorLine(maxlength_from, maxlength_subject)
+
+    # Print all emails in Mailbox
     @mailbox.emails.each do |email|
-      puts "| " + ProcessSpaces(email.date, LENGTH_DATE)+"| " + ProcessSpaces(email.from, maxlength_from) +"| " + ProcessSpaces(email.subject, maxlength_subject) + "|"
+      print "| " + processSpaces(email.date, LENGTH_DATE)
+      print "| " + processSpaces(email.from, maxlength_from)
+      print "| " + processSpaces(email.subject, maxlength_subject) + "|\n"
     end
-
-    puts "+" + "-"*(LENGTH_DATE+2)  + "+" + "-"*(maxlength_from+2) + "+" + "-"*(maxlength_subject+2) + "+"
+    printSeparatorLine(maxlength_from, maxlength_subject)
   end
 
-  # add the missing spaces to fit the format of the table
-  def ProcessSpaces (phrase,maxlength)
+  # Add the missing spaces to fit the format of the table
+  def processSpaces (phrase,maxlength)
     for i in 0..maxlength-phrase.length
       phrase += " "
     end
     return phrase
+  end
+
+  # Print Default Separator Line
+  def printSeparatorLine(maxlength_from, maxlength_subject)
+    print "+" + "-"*(LENGTH_DATE+2)
+    print "+" + "-"*(maxlength_from+2)
+    print "+" + "-"*(maxlength_subject+2) + "+\n"
   end
 
 end
