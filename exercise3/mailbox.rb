@@ -50,7 +50,7 @@ class MailboxTextFormatter
     return phrase
   end
 
-  # Print Default Separator Line
+  # Default Separator Line Printer
   def printSeparatorLine(maxlength_from, maxlength_subject)
     print "+" + "-"*(LENGTH_DATE+2)
     print "+" + "-"*(maxlength_from+2)
