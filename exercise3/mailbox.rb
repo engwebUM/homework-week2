@@ -27,24 +27,23 @@ class MailboxTextFormatter
   def initialize(mailbox)
     @mailbox = mailbox
     @column_lengths = {
-      "Date" => ["Date".length, max_column_length(@mailbox.emails.map { |e| e.date })].max,
-      "From" => ["From".length, max_column_length(@mailbox.emails.map { |e| e.from })].max,
-      "Subject" => ["Subject".length, max_column_length(@mailbox.emails.map { |e| e.subject })].max
+      "Date" => max_column_length((@mailbox.emails.map { |e| e.date }).push("Date")),
+      "From" => max_column_length((@mailbox.emails.map { |e| e.from }).push("From")),
+      "Subject" => max_column_length((@mailbox.emails.map { |e| e.subject }).push("Subject"))
     }
-    @column_lengths.values.map! { |cl| cl + 2 } # adds room for surrounding white spaces
   end
 
   def format
     puts "Mailbox: #{@mailbox.name}"
     puts
 
-    print_line
-    print_row(@column_lengths.keys, "|")
-    print_line
+    print_row_separator
+    print_row(@column_lengths.keys)
+    print_row_separator
 
-    @mailbox.emails.each { |e| print_row([e.date, e.from, e.subject], "|") }
+    @mailbox.emails.each { |e| print_row([e.date, e.from, e.subject]) }
 
-    print_line
+    print_row_separator
   end
 
   private
@@ -53,15 +52,20 @@ class MailboxTextFormatter
     (column.max_by { |w| w.length }).length
   end
 
-  def print_line
-    row = []
-    @column_lengths.values.each { |cl| row.push("-" * cl)}
-    print_row(row, "+")
+  def print_row(row)
+    row.each_index { |i| row[i] = " " + row[i] + " "*(@column_lengths.values[i] - row[i].length + 1) }
+    generic_print_row(row , "|")
   end
 
-  def print_row(row, separator)
-    output = separator
-    row.each_index { |i| output += " " + row[i] + " "*(@column_lengths.values[i] - row[i].length + 1) + separator }
+  def print_row_separator
+    row = []
+    @column_lengths.values.each { |cl| row.push("-" * (cl + 2)) }
+    generic_print_row(row, "+")
+  end
+
+  def generic_print_row(row, column_separator)
+    output = column_separator
+    row.each { |c| output += c + column_separator }
     puts output
   end
 end
