@@ -28,70 +28,62 @@ class MailboxTextFormatter
   end
 
   def format
-    puts "Mailbox: #{mailbox.name}"
-    puts
-
     hash = {} #Columns goes here
     hash["Date"]=mailbox.emails.max_by { |x| x.date.length }.date.length
     hash["From"]=mailbox.emails.max_by { |x| x.from.length }.from.length
     hash["Subject"]=mailbox.emails.max_by { |x| x.subject.length }.subject.length
 
-    printTable(hash)
+    str = "Mailbox: #{mailbox.name}\n\n" + printTable(hash)
   end
 
   private
 
   def printTable(hash)
-    printEdge(hash)
-    puts
-    printHeader(hash)
-    puts
-    printEdge(hash)
-    puts
-    printEmails(hash)
+    str = printEdge(hash) + "\n" +
+    printHeader(hash) + "\n" +
+    printEdge(hash) + "\n" +
+    printEmails(hash) +
     printEdge(hash)
   end
 
   def printEdge(hash)
+    str = ""
     hash.each do |key, value|
-      printEdgeColumn(value)
+      str += printEdgeColumn(value)
     end
-    print '+' #finish line
+    str += "+" #finish line
   end
 
   def printHeader(hash)
+    str = ""
     hash.each do |key, value|
-      printDataColumn(key, value)
+      str += printDataColumn(key, value)
     end
-    print '|' #finish line
+    str += "|" #finish line
   end
 
   def printEmails(hash)
+    str = ""
     mailbox.emails.each do |email|
-      printDataColumn(email.date, hash["Date"])
-      printDataColumn(email.from, hash["From"])
-      printDataColumn(email.subject, hash["Subject"])
-      print '|' #finish line
-      puts
+      str += printDataColumn(email.date, hash["Date"])
+      str += printDataColumn(email.from, hash["From"])
+      str += printDataColumn(email.subject, hash["Subject"])
+      str += "|\n" #finish line
     end
+    str += ""
   end
 
   def printEdgeColumn(value)
-    print "+-"
-    repeat('-', value)
-    print '-'
+    str = "+-" + repeat("-", value) + "-"
   end
 
   def printDataColumn(key, value)
-    print "| #{key}"
-    repeat(' ', (value - key.length))
-    print ' '
+    str = "| #{key}" + repeat(" ", (value - key.length)) + " "
   end
 
   def repeat(text, n)
-    print text * n
+    str = text * n
   end
-
 end
 
 emails = [
