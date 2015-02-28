@@ -38,7 +38,9 @@ class MailboxTextFormatter
         @addToSubject = 0
         
         count_max # function to count a max of characters for each field
-        output_line # function to make a border line
+        output_line (maxDate)
+        output_line (maxFrom)
+        output_line (maxSubject)
         
         puts output
        	puts "| "+"Date".center( "Date".length + maxDate-4)+" | "+"From".center( "From".length + maxFrom-4)+" | "+"Subject".center( "Subject".length + maxSubject-7)+" |"
@@ -54,29 +56,16 @@ class MailboxTextFormatter
     end
 
 
-    def output_line 
+    def output_line (maxField)
 
-    	for current_iteration_number in 1..maxDate+2 do	
+    	for current_iteration_number in 1..maxField+2 do	
     		output.concat("-") 
 		end
-
-		output.concat("+")
-
-		for current_iteration_number in 1..maxFrom+2 do	
-    		output.concat("-")
-		end
-
-		output.concat("+")
-
-		for current_iteration_number in 1..maxSubject+2 do	
-    		output.concat("-")
-		end
-
 		output.concat("+")
     end
 
   
-    def count_max 
+    def count_max ()
 
     	 mailbox.emails.each do |email| # counting the greatest number of characters for the each field
        		
