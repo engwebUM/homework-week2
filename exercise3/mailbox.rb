@@ -1,16 +1,14 @@
 class Email
-
   attr_reader :subject, :date, :from
 
   def initialize(subject, headers)
     @subject = subject
-    @date    = headers[:date].to_s
-    @from    = headers[:from].to_s
+    @date    = headers[:date]
+    @from    = headers[:from]
   end
 end
 
 class Mailbox
-
   attr_reader :emails, :name
 
   def initialize(name, emails)
@@ -20,7 +18,6 @@ class Mailbox
 end
 
 class MailboxTextFormatter
-
   LENGTH_DATE = 10 # date have always the same length
 
   def initialize(mailbox)
@@ -35,7 +32,6 @@ class MailboxTextFormatter
       if email.from.length > @maxlength_from
         @maxlength_from = email.from.length
       end
-
       if email.subject.length > @maxlength_subject
         @maxlength_subject = email.subject.length
       end
@@ -43,18 +39,16 @@ class MailboxTextFormatter
   end
 
   # Add the missing spaces to fit the format of the table
-  def processSpaces (phrase,maxlength)
-    for i in 0..maxlength-phrase.length
-      phrase += " "
-    end
-    return phrase
+  def processSpacing (phrase,maxlength)
+    phrase += " "*(maxlength-phrase.length+1)
   end
 
   # Default Separator Line Printer
   def printSeparatorLine(maxlength_from, maxlength_subject)
-    print "+" + "-"*(LENGTH_DATE+2)
-    print "+" + "-"*(maxlength_from+2)
-    print "+" + "-"*(maxlength_subject+2) + "+\n"
+    line = "+" + "-"*(LENGTH_DATE+2) # +2 means a empty space after/before the bars
+    line << "+" + "-"*(maxlength_from+2)
+    line << "+" + "-"*(maxlength_subject+2) + "+\n"
+    return line
   end
 
   def format
@@ -62,22 +56,22 @@ class MailboxTextFormatter
     getHigherLength
 
     # Print Mailbox Name
-    puts "Mailbox:   #{@mailbox.name}\n\n"
-    printSeparatorLine(@maxlength_from, @maxlength_subject)
+    mailBoxContent = "Mailbox:   #{@mailbox.name}\n\n"
+    mailBoxContent << printSeparatorLine(@maxlength_from, @maxlength_subject)
 
     # Print Title Header
-    print "| " + processSpaces("Date", LENGTH_DATE)
-    print "| " + processSpaces("From", @maxlength_from)
-    print "| " + processSpaces("Subject", @maxlength_subject) + "|\n"
-    printSeparatorLine(@maxlength_from, @maxlength_subject)
+    mailBoxContent << "| " + processSpacing("Date", LENGTH_DATE)
+    mailBoxContent << "| " + processSpacing("From", @maxlength_from)
+    mailBoxContent << "| " + processSpacing("Subject", @maxlength_subject) + "|\n"
+    mailBoxContent << printSeparatorLine(@maxlength_from, @maxlength_subject)
 
     # Print all emails in Mailbox
     @mailbox.emails.each do |email|
-      print "| " + processSpaces(email.date, LENGTH_DATE)
-      print "| " + processSpaces(email.from, @maxlength_from)
-      print "| " + processSpaces(email.subject, @maxlength_subject) + "|\n"
+      mailBoxContent << "| " + processSpacing(email.date, LENGTH_DATE)
+      mailBoxContent << "| " + processSpacing(email.from, @maxlength_from)
+      mailBoxContent << "| " + processSpacing(email.subject, @maxlength_subject) + "|\n"
     end
-    printSeparatorLine(@maxlength_from, @maxlength_subject)
+    mailBoxContent << printSeparatorLine(@maxlength_from, @maxlength_subject)
   end
 end
 
