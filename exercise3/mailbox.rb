@@ -43,23 +43,24 @@ class MailboxTextFormatter
 
   #This method prints all the mailbox, formatted
   def format
-    puts "Mailbox: #{@mailbox.name}"
+    @finalResult = "Mailbox: #{@mailbox.name}\n\n"
 
     max_lengths = get_max_lengths(@mailbox.emails)
 
-    puts "+" + "-"*12 + "+" + "-"*(max_lengths[0]+2) + "+" + "-"*(max_lengths[1]+2) + "+
+    @finalResult << "+" + "-"*12 + "+" + "-"*(max_lengths[0]+2) + "+" + "-"*(max_lengths[1]+2) + "+
 | Date       | From" + " "*(max_lengths[0]-3) + "| Subject" + " "*(max_lengths[1]-6) +"|
-+" + "-"*12 + "+" + "-"*(max_lengths[0]+2) + "+" + "-"*(max_lengths[1]+2) + "+"
++" + "-"*12 + "+" + "-"*(max_lengths[0]+2) + "+" + "-"*(max_lengths[1]+2) + "+\n"
 
     @mailbox.emails.each do |email|
       from_length = 0
       subject_length = 0
       from_length = email.from.length
       subject_length = email.subject.length
-      puts "|" + " #{email.date} | #{email.from} " + " "*(max_lengths[0]-from_length) + "| #{email.subject} " + " "*(max_lengths[1]-subject_length) + "|"
+      @finalResult << "|" + " #{email.date} | #{email.from} " + " "*(max_lengths[0]-from_length) + "| #{email.subject} " + " "*(max_lengths[1]-subject_length) + "|\n"
     end
-    puts "+" + "-"*12 + "+" + "-"*(max_lengths[0]+2) + "+" + "-"*(max_lengths[1]+2) + "+"
+    @finalResult << "+" + "-"*12 + "+" + "-"*(max_lengths[0]+2) + "+" + "-"*(max_lengths[1]+2) + "+\n"
   end
+  @finalResult
 end
 
 emails = [
