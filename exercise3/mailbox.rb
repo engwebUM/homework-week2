@@ -27,9 +27,10 @@ class MailboxTextFormatter
 
 	def getDimensionsTable(mailbox)
 		dimensionsTable = {}
-		dateRow = 4
-		subjectRow = 4
-		fromRow = 7
+		dateRow = 4 # initialize in 4 because string length of "date" (first value of header) is 4
+		subjectRow = 4 # initialize in 4 because string length of "from" (second value of header) is 4
+		fromRow = 7 # initialize in 7 because string length of "subject" (third value of header) is 7
+		# calculate max length of each attribute value
 		@mailbox.emails.map do |email| 
 			if email.date.size > dateRow
 	 			dateRow = email.date.size
@@ -41,28 +42,34 @@ class MailboxTextFormatter
 	 			fromRow = email.from.size
 	 		end
 		end
-		@dimensionsTable = [dateRow, subjectRow, fromRow]
+		# return array with max dimension of each three attributes
+		dimensionsTable = [dateRow, subjectRow, fromRow]
 	end
 
 	def format
-		content = []
-		dimensionsColumns = getDimensionsTable(@mailbox)
-		dateRowDimension = dimensionsColumns[0]
-		fromRowDimension = dimensionsColumns[2]
-		subjectRowDimension = dimensionsColumns[1]
-		totalWidthTable = dateRowDimension + fromRowDimension + subjectRowDimension + 8
+		content = [] # variable that contains array that should be returned
+		dimensionsColumns = getDimensionsTable(@mailbox) # array that contains width dimensions of cells (date, from and subject)
+		dateRowDimension = dimensionsColumns[0] # value of width (size(int)) date cell 
+		fromRowDimension = dimensionsColumns[2] # value of width (size(int)) from cell
+		subjectRowDimension = dimensionsColumns[1] # value of width (size(int)) subject cell
+		# format cells of table, is like a template
 		formatCells = '| %-' + dateRowDimension.to_s + 's | %-' + fromRowDimension.to_s + 's | %-' + subjectRowDimension.to_s + 's |'
+		# format separators of table, reuse the content of variable "formatCells", is like a template
 		formatSeparator = formatCells.gsub('|', '+')
+		# fill the template "formatSeparator" with "-" character, the number of times that the char is added, is equal of width cells (date, from and subject)
 		separator = formatSeparator % ['-' * dateRowDimension, '-' * fromRowDimension, '-' * subjectRowDimension]
+		# start append content that should be returned
 		content << 'Mailbox: ' + @mailbox.name
 		content << ''
 		content << separator
 		content << formatCells % ['Date', 'From', 'Subject']
 		content << separator
 		@mailbox.emails.map do |email| 
+			# fill the template "formatCells" values (date, from, subject) of each email
 			content << formatCells % [email.date, email.from, email.subject]
 		end
 		content << separator
+		# return all content. The ruby return variable "content" because is the last called of method, not need write "return"
 		content << ''
 	end
 end
