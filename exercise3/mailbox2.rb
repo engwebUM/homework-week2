@@ -353,7 +353,7 @@ mailbox = Mailbox.new("Ruby Study Group", emails)
 new_column_hash= [
   NewColumn.new("Have been Read", { :'1' => "check" , :'2' => " " , :'3' => "cheking"},emails.length),
   NewColumn.new("Second Column Test", { :'1' => "one" , :'2' => "two" , :'3' => "three"},emails.length),
-  NewColumn.new("New Column", { :'1' => "star" , :'2' => " " , :'3' => "star"},emails.length)
+  NewColumn.new("New Column", { :'1' => "star" , :'2' => " " , :'3' => "starrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"},emails.length)
 ]
 
 formatter = MailboxTextFormatter.new(mailbox,new_column_hash)
