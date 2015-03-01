@@ -110,3 +110,24 @@ mailbox = Mailbox.new("Ruby Study Group", emails)
 formatter = MailboxTextFormatter.new(mailbox)
 
 puts formatter.format
+
+#
+#	Outro teste com strings ainda maiores
+#
+
+emails2 = [
+  Email.new("Homework this week", { :date => "2014-12-01", :from => "Ferdous" }),
+  Email.new("Keep on coding! :):):):):):):):)", { :date => "2014-12-01", :from => "Dajana" }),
+  Email.new("Re: Homework this week", { :date => "2014-12-02", :from => "Ariane Ariane Ariane Ariane" })
+]
+
+mailbox2 = Mailbox.new("Outra lista de email para testes", emails2)
+formatter2 = MailboxTextFormatter.new(mailbox2)
+
+puts formatter2.format
+
+
+
+
+
+
