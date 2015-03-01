@@ -28,61 +28,73 @@ class MailboxTextFormatter
   end
 
   def format
-    hash = {} #Columns goes here
-    hash["Date"]=mailbox.emails.max_by { |x| x.date.length }.date.length
-    hash["From"]=mailbox.emails.max_by { |x| x.from.length }.from.length
-    hash["Subject"]=mailbox.emails.max_by { |x| x.subject.length }.subject.length
-
-    str = "Mailbox: #{mailbox.name}\n\n" + printTable(hash)
+    if @mailbox.emails.nil?
+      "Emails not found"
+    else @mailbox.emails.respond_to?("each")
+      columns = ["date", "from", "subject"] #columns goes here
+      #initializes hash with column size as value
+      #prevents case when fields are slower than columns name
+      columnsMaxSizeHash = Hash[columns.map {|column| [column, column.length]}]
+      #finds the field with max value for each column
+      mailbox.emails.each do |email|
+        columnsMaxSizeHash.each do |column,size|
+          value = email.instance_variable_get("@#{column}")
+          #prevents case when column does not match any instance variable
+          if value != nil
+            columnsMaxSizeHash[column] = [size, value.to_s.strip.length].max
+          end
+        end
+      end
+      printTable(columnsMaxSizeHash)
+    end
   end
 
   private
 
   def printTable(hash)
-    str = printEdge(hash) + "\n" +
-    printHeader(hash) + "\n" +
-    printEdge(hash) + "\n" +
-    printEmails(hash) +
-    printEdge(hash)
+    printName + printEdge(hash) + "\n" + printHeader(hash) + "\n" +
+    printEdge(hash) + "\n" + printEmails(hash) + printEdge(hash)
+  end
+
+  def printName
+    if mailbox.name.to_s.strip.length != 0
+      "Mailbox: #{mailbox.name}\n\n"
+    else
+      "Mailbox: Name not found\n\n"
+    end
   end
 
   def printEdge(hash)
     str = ""
-    hash.each do |key, value|
-      str += printEdgeColumn(value)
-    end
+    hash.each {|key, value| str += "+-" + repeat("-", value) + "-"}
     str += "+" #finish line
   end
 
   def printHeader(hash)
     str = ""
-    hash.each do |key, value|
-      str += printDataColumn(key, value)
-    end
+    hash.each {|key, value|
+      str += "| #{key.capitalize}" + repeat(" ", (value - key.length)) + " "}
     str += "|" #finish line
   end
 
   def printEmails(hash)
     str = ""
     mailbox.emails.each do |email|
-      str += printDataColumn(email.date, hash["Date"])
-      str += printDataColumn(email.from, hash["From"])
-      str += printDataColumn(email.subject, hash["Subject"])
+      hash.each do |column,size|
+        value = email.instance_variable_get("@#{column}")
+        if value != nil
+          str += "| #{value.to_s.strip}" + repeat(" ", (size - value.to_s.strip.length)) + " "
+        else
+          str += "| " + repeat(" ", (size)) + " "
+        end
+      end
       str += "|\n" #finish line
     end
-    str += ""
-  end
-
-  def printEdgeColumn(value)
-    str = "+-" + repeat("-", value) + "-"
-  end
-
-  def printDataColumn(key, value)
-    str = "| #{key}" + repeat(" ", (value - key.length)) + " "
+    str
   end
 
   def repeat(text, n)
-    str = text * n
+    text * n
   end
 end
 
