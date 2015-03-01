@@ -22,8 +22,8 @@ class MailboxTextFormatter
 
   def initialize(mailbox)
     @mailbox = mailbox
-    @maxlength_from    = 0
-    @maxlength_subject = 0
+    @maxlength_from    = 4 # assure the right format when from < 4
+    @maxlength_subject = 7 # assure the right format when subject < 7
   end
 
   # Get the higher length of From and Subject column
