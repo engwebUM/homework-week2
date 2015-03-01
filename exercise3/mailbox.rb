@@ -76,11 +76,7 @@ class MailboxTextFormatter
 	def def_max_from (mailbox)
 		max = 4
 		mailbox.emails.each do |email|	
-			if email.from.length > max	
-				max = email.from.length
-			else
-				max
-			end
+			max = email.from.length unless email.from.length <= max	
 		end
 		return max
 	end
@@ -88,11 +84,7 @@ class MailboxTextFormatter
 	def def_max_subject (mailbox)
 		max = 7
 		mailbox.emails.each do |email|	
-			if email.subject.length > max	
-				max = email.subject.length
-			else
-				max
-			end
+			max = email.subject.length unless email.subject.length <= max	
 		end
 		return max
 	end
