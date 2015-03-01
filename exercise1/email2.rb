@@ -10,13 +10,9 @@ class Email
   end
 end
 
-#testing
-email1 = Email.new("Keep on coding! :)", { :date => "2014-12-01", :from => "Ferdous" })
-puts "Date:    #{email1.date}"
-puts "From:    #{email1.from}"
-puts "Subject: #{email1.subject}"
+email = Email.new("Keep on coding! :)", { :date => "2014-12-01", :from => "Ferdous" })
 
-email2 = Email.new("Just another Subject", { :date => "2020-12-11", :from => "Some Random Guy" })
-puts "Date:    #{email1.date}"
-puts "From:    #{email1.from}"
-puts "Subject: #{email1.subject}"
+
+puts "Date:    #{email.date}"
+puts "From:    #{email.from}"
+puts "Subject: #{email.subject}"
