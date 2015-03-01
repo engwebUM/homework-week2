@@ -31,7 +31,7 @@ class MailboxTextFormatter
 		subjectRow = 4 # initialize in 4 because string length of "from" (second value of header) is 4
 		fromRow = 7 # initialize in 7 because string length of "subject" (third value of header) is 7
 		# calculate max length of each attribute value
-		@mailbox.emails.map do |email| 
+		mailbox.emails.map do |email| 
 			if email.date.size > dateRow
 	 			dateRow = email.date.size
 	 		end
@@ -82,10 +82,5 @@ emails = [
 
 mailbox = Mailbox.new("Ruby Study Group", emails)
 formatter = MailboxTextFormatter.new(mailbox)
-
-puts formatter.format
-
-addNewEmail = Email.new("Add a new email for test, bla, bla, bla", { :date => "2015-03-01", :from => "Sandro" })
-formatter.mailbox.emails << addNewEmail
 
 puts formatter.format
