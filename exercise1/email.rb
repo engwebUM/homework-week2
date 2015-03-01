@@ -10,10 +10,14 @@ class Email
 		@from = from
 		@subject = subject
 	end
+	If you write:
+
 	
 	def date
 		@date
 	end
+	# ou:
+	# attr_reader :date
 	
 	def from
 		@from
