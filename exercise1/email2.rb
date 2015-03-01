@@ -1,12 +1,10 @@
-puts "Exercicio 1.2"
-
 class Email
 	 attr_reader :subject  
 	 attr_reader :headers
 
-	def initialize (s= subject,h = {date => "date", from => "from"})
-		@subject = s
-		@headers = h
+	def initialize (subject,headers)
+		@subject = subject
+		@headers = headers
 	end
 
 	def date
@@ -19,7 +17,8 @@ class Email
 
 
 end
-
+	
+	#teste
 
 	email = Email.new("Keep on coding! :)", { :date => "2014-12-01", :from => "Ferdous" })
 

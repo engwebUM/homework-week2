@@ -1,14 +1,12 @@
-puts "Exercicio 1.1"
-
 class Email
 	 attr_reader :subject  
 	 attr_reader :date
 	 attr_reader :from   
 
-	def initialize (s="subject" , d="date" , f="from")
-		@subject = s
-		@date = d
-		@from = f
+	def initialize (subject,date,from)
+		@subject = subject
+		@date = date
+		@from = from
 	end
 
 end
