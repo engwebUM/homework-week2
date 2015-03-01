@@ -10,14 +10,11 @@ class Email
 		@from = from
 		@subject = subject
 	end
-	If you write:
-
+	
 	
 	def date
 		@date
 	end
-	# ou:
-	# attr_reader :date
 	
 	def from
 		@from
@@ -26,7 +23,10 @@ class Email
 	def subject
 		@subject
 	end	
-	
+	# ou:
+	# attr_reader :date
+	# attr_reader :from
+	# attr_reader :subject
 end
 
 email = Email.new("Homework this week", "2014-12-01", "Ferdous")
