@@ -19,20 +19,20 @@ class MailboxTextFormatter
 
   def initialize(mailbox)
     @mailbox = mailbox
-    @columns = [:date, :from, :subject] # change this line to add, delete or reorder columns (use strings or symbols)
-    # NOTE: from this point on, @columns becomes an hash with columns' names and widths like {col1: 10, colN: 21}
-    @columns = columns.map{|val| [val.to_s.downcase, val.length]}.to_h  # populate hash with length from columns' titles
+    columns_to_be_shown = [:date, :from, :subject]  # change this line to add, delete or reorder columns (use strings or symbols)
+    # NOTE: @columns is an hash with columns' names and widths like { "col1": 10, "colN": 21 }
+    @columns = columns_to_be_shown.map { |val| [val.to_s.strip.downcase, val.to_s.strip.length] }.to_h  # populate hash with length from columns' names
   end
 
   def format
-    @columns = set_columns_width # setting widths before formatting, in case something has changed since initialization
+    @columns = set_columns_width  # setting widths before formatting, in case something has changed since initialization
     s_name << s_separator << s_header << s_separator << s_emails << s_separator
   end
 
   def set_columns_width
     hash = columns
     mailbox.emails.each do |email|
-      hash.update(hash){|key, value| [hash[key], email.instance_variable_get("@#{key}").to_s.length].max}
+      hash.update(hash) { |key, value| [hash[key], email.instance_variable_get("@#{key}").to_s.length].max }
     end
     hash
   end
