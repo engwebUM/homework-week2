@@ -7,8 +7,8 @@ class Email
     @from = headers[:from]
 
   end
-
 end
+
 
 class Mailbox
   attr_reader :name, :emails
@@ -28,18 +28,59 @@ class MailboxTextFormatter
     @mailbox = mailbox
   end
 
-def format
-  puts "MailBox: #{mailbox.name}"
-  array = Array[]
-  array.push("+------------+----------+-------------------------------+");
-  array.push("| Date       | From    \t| Subject\t\t\t|");
-  array.push("+------------+----------+-------------------------------+");
-  mailbox.emails.each do |email|
-    array.push("| #{email.date} | #{email.from} \t| #{email.subject}\t\t|");
-    array.push("+------------+----------+-------------------------------+")
+  def countDate
+    size = 0
+    mailbox.emails.each do |email|
+        if email.date.length > size
+            size = email.date.length
+        end
+    end
+    
+    return size
   end
-  return array
-end
+
+  def countFrom
+    size = 0
+    mailbox.emails.each do |email|
+        if email.from.length > size
+            size = email.from.length
+        end
+    end
+
+    return size
+  end
+
+  def countSubject
+    size = 0
+    mailbox.emails.each do |email|
+        if email.subject.length > size
+            size = email.subject.length
+        end
+    end
+
+    return size
+  end
+
+
+  def format
+    date_size = countDate
+    from_size = countFrom
+    subject_size = countSubject
+
+    puts "MailBox: #{mailbox.name}"
+    array = Array[]
+    array.push("+-"+"-"*date_size+"-+"+"-"*from_size+"-+-"+"-"*subject_size+"-+")
+    array.push("| Date"+" "* (date_size - "Date".length)+" | From"+" "* (from_size - "From".length)+"| Subject"+" "* (subject_size - "Subject".length)+" |")
+    array.push("+-"+"-"*date_size+"-+"+"-"*from_size+"-+-"+"-"*subject_size+"-+")
+
+    mailbox.emails.each do |email|
+      array.push("| #{email.date} "+" "* (date_size - email.date.length)+"| #{email.from}"+" "* (from_size - email.from.length)+"| #{email.subject} "+" "* (subject_size - email.subject.length)+"|")
+      array.push("+-"+"-"*date_size+"-+"+"-"*from_size+"-+-"+"-"*subject_size+"-+")
+    end
+
+    return array
+  end
+
 end
 
 

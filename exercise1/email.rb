@@ -6,8 +6,8 @@ class Email
     @date = date
     @from = from
   end
-
 end
+
 
 email = Email.new("Homework", "2015-02-26", "Filipa")
 puts "Date:    #{email.date}"
