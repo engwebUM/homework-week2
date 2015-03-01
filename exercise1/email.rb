@@ -4,7 +4,7 @@
 
 class Email
   # fill in this class body
-	def initialize(date, from, subject)
+	def initialize(subject, date, from)
 		#variáveis de instancia
 		@date = date
 		@from = from

@@ -40,7 +40,7 @@ class Email
 	
 end
 
-email = Email.new("Homework this week", "2014-12-01", "Ferdous")
+email = Email.new("Keep on coding! :)", { :date => "2014-12-01", :from => "Ferdous" })
 
 puts "Date:    #{email.date}"
 puts "From:    #{email.from}"
