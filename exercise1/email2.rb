@@ -14,8 +14,6 @@ class Email
 	def from
 		headers[:from]
 	end
-
-
 end
 	
 	#teste
