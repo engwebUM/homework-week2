@@ -1,6 +1,6 @@
 class Email
-	 attr_reader :subject  
-	 attr_reader :headers
+	attr_reader :subject  
+	attr_reader :headers
 
 	def initialize (subject,headers)
 		@subject = subject
