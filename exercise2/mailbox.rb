@@ -36,6 +36,7 @@ class Mailbox
   # fill in this class body
 	
 	attr_reader :emails
+	attr_reader :name
 	
 	def initialize( name, emails)
 		@name = name
